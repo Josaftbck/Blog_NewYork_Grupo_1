@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maqueta NYC Systems | Arquitectura heterogénea y asíncrona</title>
+  <meta name="description" content="Informe interactivo de la maqueta automatizada de la ciudad de Nueva York: comunicación, estructura, componentes y arquitectura heterogénea y asíncrona.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="taxi" viewBox="0 0 120 50">
+        <rect x="4" y="22" width="112" height="18" rx="6" fill="#f7b500"/>
+        <path d="M26 22 L38 8 H82 L96 22 Z" fill="#f7b500"/>
+        <path d="M33 21 L41 11 H58 V21 Z" fill="#cfe6ff"/>
+        <path d="M62 11 H79 L89 21 H62 Z" fill="#cfe6ff"/>
+        <rect x="48" y="2" width="24" height="7" rx="2" fill="#17202c"/>
+        <text x="60" y="8" font-size="6" font-weight="700" text-anchor="middle" fill="#f7b500" font-family="Arial">TAXI</text>
+        <rect x="4" y="31" width="112" height="3" fill="#17202c" opacity=".18"/>
+        <rect x="108" y="26" width="7" height="5" rx="1" fill="#fff6b0"/>
+        <rect x="5" y="26" width="5" height="5" rx="1" fill="#e0634f"/>
+        <circle cx="30" cy="40" r="8" fill="#17202c"/><circle cx="30" cy="40" r="3.4" fill="#8a98a8"/>
+        <circle cx="92" cy="40" r="8" fill="#17202c"/><circle cx="92" cy="40" r="3.4" fill="#8a98a8"/>
+      </symbol>
+    </defs>
+  </svg>
+  <a class="skip" href="#main">Saltar al contenido</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#inicio" aria-label="Maqueta NYC Systems, inicio">
+        <span class="brand-mark" aria-hidden="true">NYC</span>
+        <span class="brand-text">Maqueta Systems</span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="nav" class="nav" aria-label="Secciones">
+        <a href="#ciudad">Ciudad</a>
+        <a href="#comunicacion">Comunicación</a>
+        <a href="#estructura">Estructura</a>
+        <a href="#componentes">Componentes</a>
+        <a href="#simulador">Simulador</a>
+        <a href="#video">Video</a>
+        <a href="#lugares">Lugares</a>
+        <a href="#avance">Maqueta</a>
+        <a href="#arquitectura">Arquitectura</a>
+        <a href="#conclusion">Conclusión</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+      <img class="hero-photo" id="heroPhoto" src="img/manhattan-aerea.jpg" alt="Vista aérea de Manhattan con Central Park al fondo" fetchpriority="high">
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="stars" id="stars" aria-hidden="true"></div>
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Arquitectura de Computadoras I &middot; Fase final</p>
+          <h1>Una ciudad de 2 metros que <em>obedece a la web</em></h1>
+          <p class="lead">Maqueta automatizada de Nueva York donde cada lugar real funciona como un subsistema independiente. Una orden nace en el navegador, cruza tres protocolos y termina moviendo un servo o un motor a pasos.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#simulador">Probar el simulador</a>
+            <a class="btn btn-ghost" href="#video">Ver el video</a>
+          </div>
+          <p class="deadline"><span class="pulse-dot" aria-hidden="true"></span>Presentación final: <strong>31 de octubre de 2026</strong> <em id="deadlineText"></em></p>
+        </div>
+        <ul class="stats" aria-label="Datos clave del proyecto">
+          <li><strong><span data-count="2">2</span> m</strong><span>tamaño máximo de la maqueta</span></li>
+          <li><strong><span data-count="3">3</span></strong><span>capas: software, enlace y actuadores</span></li>
+          <li><strong><span data-count="5">5</span> s</strong><span>intervalo de consulta del ESP32 a la API</span></li>
+          <li><strong><span data-count="9600">9600</span></strong><span>baudios en el enlace UART</span></li>
+        </ul>
+      </div>
+      <svg class="cityscape" id="cityScape" viewBox="0 0 1440 240" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
+      <div class="hero-road" aria-hidden="true">
+        <svg class="taxi taxi-a" viewBox="0 0 120 50"><use href="#taxi"/></svg>
+        <svg class="taxi taxi-b" viewBox="0 0 120 50"><use href="#taxi"/></svg>
+        <svg class="taxi taxi-c" viewBox="0 0 120 50"><use href="#taxi"/></svg>
+      </div>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>PUENTE LEVADIZO &middot; ROOSEVELT ISLAND</span><span>TELEFÉRICO &middot; EAST RIVER</span><span>I2C 0x08</span><span>UART TTL 9600 8N1</span><span>EMPIRE STATE &middot; ELEVADOR</span><span>TIMES SQUARE &middot; SEMÁFORO</span><span>CENTRAL PARK &middot; BETHESDA</span><span>ESP32 &rarr; MEGA &rarr; UNO</span>
+        <span>PUENTE LEVADIZO &middot; ROOSEVELT ISLAND</span><span>TELEFÉRICO &middot; EAST RIVER</span><span>I2C 0x08</span><span>UART TTL 9600 8N1</span><span>EMPIRE STATE &middot; ELEVADOR</span><span>TIMES SQUARE &middot; SEMÁFORO</span><span>CENTRAL PARK &middot; BETHESDA</span><span>ESP32 &rarr; MEGA &rarr; UNO</span>
+      </div>
+    </div>
+
+    <!-- CIUDAD -->
+    <section class="section" id="ciudad">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">00 &middot; Nueva York como sistema</p>
+          <h2>Una ciudad es un sistema de sistemas</h2>
+          <p>Nueva York funciona porque transporte, energía, edificios y control trabajan al mismo tiempo, cada uno con su función y dependiendo de los demás. La maqueta reproduce esa idea a escala.</p>
+        </header>
+        <div class="city-grid">
+          <div class="city-cards">
+            <article class="mini-card"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M8 21l2-4M16 21l-2-4"/><circle cx="9" cy="14" r=".8"/><circle cx="15" cy="14" r=".8"/></svg><h3>Transporte</h3><p>Medios terrestres y ferroviarios conectan los sectores. Sistemas distintos para una misma necesidad.</p></article>
+            <article class="mini-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 18h20M4 18V9M20 18V9M4 9q8 8 16 0M8 18v-4M12 18v-5M16 18v-4"/></svg><h3>Infraestructura</h3><p>Calles, túneles y puentes. Cada vía necesita señalización y control del tráfico.</p></article>
+            <article class="mini-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V8l6-5 6 5v13M10 21v-4h4v4M9 11h2M13 11h2M9 14h2M13 14h2"/></svg><h3>Desarrollo vertical</h3><p>Cada rascacielos es un pequeño sistema con energía, circulación, seguridad y comunicaciones.</p></article>
+            <article class="mini-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L5 14h6l-1 8 8-12h-6z"/></svg><h3>Energía</h3><p>Sostiene a los demás subsistemas. Una falla afecta edificios, transporte y comunicaciones.</p></article>
+            <article class="mini-card"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="2" width="8" height="20" rx="3"/><circle cx="12" cy="7" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="17" r="1.5"/></svg><h3>Control de tránsito</h3><p>Semáforos y señales usan información para coordinar vehículos y personas.</p></article>
+            <article class="mini-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C8 9 6 12 6 15a6 6 0 0012 0c0-3-2-6-6-12z"/></svg><h3>Servicios urbanos</h3><p>Agua, residuos y mantenimiento deben estar disponibles todo el tiempo.</p></article>
+          </div>
+          <figure class="frame">
+            <img src="img/metro-nyc.jpg" alt="Mapa del metro de Nueva York con sus líneas de colores" loading="lazy" data-zoom>
+            <figcaption>El mapa del metro resume la idea del proyecto: muchas líneas independientes que forman una sola red. Toca la imagen para ampliarla.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <div class="road-divider" aria-hidden="true"><div class="road"></div><svg class="taxi taxi-run" viewBox="0 0 120 50"><use href="#taxi"/></svg><svg class="taxi taxi-run taxi-run-2" viewBox="0 0 120 50"><use href="#taxi"/></svg></div>
+
+    <!-- COMUNICACIÓN -->
+    <section class="section" id="comunicacion">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">01 &middot; Qué comunicación se está haciendo</p>
+          <h2>Seis enlaces y tres idiomas distintos</h2>
+          <p>El sistema no usa un solo protocolo. Cada salto usa el que mejor encaja con su distancia y con el hardware que conecta. La orden viaja como texto desde la interfaz hasta el actuador y la respuesta regresa por el mismo camino.</p>
+        </header>
+
+        <ol class="chain">
+          <li class="link-card">
+            <span class="link-num">1</span>
+            <div>
+              <h3>Interfaz web y API REST</h3>
+              <p>El operador inicia sesión y pulsa un botón. El frontend llama a un endpoint como <code>POST /api/puente/abrir</code> con el token JWT en cada solicitud. El token expira a los 120 minutos.</p>
+              <ul class="tags"><li>HTTP / JSON</li><li>JWT HS256</li><li>Axios</li></ul>
+            </div>
+            <span class="sync sync-async">Petición y respuesta</span>
+          </li>
+          <li class="link-card">
+            <span class="link-num">2</span>
+            <div>
+              <h3>API y base de datos</h3>
+              <p>La API no habla con el hardware. Inserta la orden, por ejemplo <code>SERVO_SUBIR</code>, en la tabla <code>Instruccion_Pendiente</code> de SQL Server 2022 y responde de inmediato. La cola es la propia tabla, leída con bloqueo pesimista.</p>
+              <ul class="tags"><li>SQL Server 2022</li><li>Docker, puerto 1444</li><li>Dapper</li></ul>
+            </div>
+            <span class="sync sync-async">Cola desacoplada</span>
+          </li>
+          <li class="link-card">
+            <span class="link-num">3</span>
+            <div>
+              <h3>ESP32 y API</h3>
+              <p>El ESP32 pregunta cada 5 segundos con <code>GET /api/instrucciones/pendientes</code>. Cuando termina, informa el resultado con <code>POST /api/instrucciones/respuesta</code>. Un túnel ngrok le permite alcanzar la API local. Su servidor HTTP del puerto 80 solo sirve para diagnóstico.</p>
+              <ul class="tags"><li>HTTP por polling</li><li>Cada 5 s</li><li>WiFi 2.4 GHz</li></ul>
+            </div>
+            <span class="sync sync-async">Asíncrona por polling</span>
+          </li>
+          <li class="link-card">
+            <span class="link-num">4</span>
+            <div>
+              <h3>ESP32 y Arduino Mega</h3>
+              <p>La orden baja por UART a nivel TTL con 9600 baudios, 8 bits de datos, sin paridad y 1 bit de parada. Usa Serial2, con RX en el GPIO16 y TX en el GPIO17. Los mensajes son texto ASCII terminado en salto de línea. El conversor TXS0108E protege al ESP32, que no tolera 5 V. Un PING cada 3 segundos confirma que el Mega sigue vivo, y se marca fuera de línea tras 10 segundos sin respuesta.</p>
+              <ul class="tags"><li>UART TTL</li><li>9600 8N1</li><li>TXS0108E</li></ul>
+            </div>
+            <span class="sync sync-async">Asíncrona, sin reloj</span>
+          </li>
+          <li class="link-card">
+            <span class="link-num">5</span>
+            <div>
+              <h3>Arduino Mega y esclavo 0x08</h3>
+              <p>El Mega es el maestro I2C y el único que inicia el bus. El esclavo 0x08 mueve el servo del puente y el motor a pasos del teleférico. Tras cada comando el Mega espera la respuesta y la lee, por ejemplo <code>RESP POS:115</code>.</p>
+              <ul class="tags"><li>I2C 100 kHz</li><li>Maestro y esclavo</li><li>Wire.h</li></ul>
+            </div>
+            <span class="sync sync-sync">Síncrona, con reloj SCL</span>
+          </li>
+          <li class="link-card">
+            <span class="link-num">6</span>
+            <div>
+              <h3>Arduino Mega y esclavo 0x09</h3>
+              <p>Segundo esclavo I2C, dedicado al Empire State Building. Mueve el motor a pasos del elevador, un LED y lee los fines de carrera. Responde el piso y los pasos con un formato como <code>NIVEL:03|PAS:01234</code>.</p>
+              <ul class="tags"><li>I2C</li><li>0x09</li><li>Fines de carrera</li></ul>
+            </div>
+            <span class="sync sync-sync">Síncrona, con reloj SCL</span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ESTRUCTURA -->
+    <section class="section section-alt" id="estructura">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">02 &middot; Qué estructura se realiza</p>
+          <h2>Tres capas con responsabilidades separadas</h2>
+          <p>Cada capa solo conoce a la que tiene al lado. Por eso un subsistema nuevo se agrega con nuevas instrucciones en la base de datos y nuevos comandos en el esclavo, sin tocar el resto.</p>
+        </header>
+
+        <div class="layers">
+          <article class="layer layer-1">
+            <header><span class="layer-tag">Capa 1</span><h3>Software</h3></header>
+            <p>Recibe las órdenes del operador y las registra como instrucciones pendientes.</p>
+            <ul>
+              <li><strong>Interfaz web</strong> Vue 3 con TypeScript y Vite</li>
+              <li><strong>API REST</strong> ASP.NET Core 8 con JWT y Swagger</li>
+              <li><strong>Base de datos</strong> SQL Server 2022</li>
+            </ul>
+          </article>
+          <div class="layer-arrow" aria-hidden="true"><span>HTTP</span></div>
+          <article class="layer layer-2">
+            <header><span class="layer-tag">Capa 2</span><h3>Enlace</h3></header>
+            <p>Lleva cada instrucción desde la red hasta el actuador y trae la respuesta de vuelta.</p>
+            <ul>
+              <li><strong>ESP32</strong> pasarela WiFi</li>
+              <li><strong>Arduino Mega</strong> maestro I2C</li>
+              <li><strong>Arduino Uno</strong> esclavo I2C</li>
+            </ul>
+          </article>
+          <div class="layer-arrow" aria-hidden="true"><span>UART, I2C</span></div>
+          <article class="layer layer-3">
+            <header><span class="layer-tag">Capa 3</span><h3>Actuadores</h3></header>
+            <p>Ejecuta el movimiento físico de cada lugar de la maqueta.</p>
+            <ul>
+              <li><strong>Puente levadizo</strong> servo MG996R</li>
+              <li><strong>Teleférico</strong> motor a pasos</li>
+              <li><strong>Elevador</strong> motor a pasos</li>
+              <li><strong>Semáforo</strong> LEDs</li>
+            </ul>
+          </article>
+        </div>
+
+        <figure class="figure">
+          <img src="img/arquitectura.png" alt="Diagrama de bloques de la arquitectura general: navegador, frontend, API REST y base de datos; ESP32, Mega y Uno; puente y teleférico" loading="lazy" data-zoom>
+          <figcaption>Figura 1. Arquitectura general del sistema, versión del informe del 16 de octubre. En la versión final el esclavo 0x09 suma el elevador. Toca la imagen para ampliarla.</figcaption>
+        </figure>
+
+        <div class="struct-grid">
+          <article class="card">
+            <h3>Base de datos Ciudad_New_York</h3>
+            <ul class="tags tags-wrap">
+              <li>Usuario</li><li>RolUsuario</li><li>UsuarioRol</li><li>Instruccion</li>
+              <li>Permiso</li><li>Instruccion_Pendiente</li><li>Log_Instruccion</li><li>Dispositivo</li><li>Estado_Componente</li>
+            </ul>
+            <p>La tabla <code>Instruccion_Pendiente</code> funciona como cola. <code>Log_Instruccion</code> es la bitácora con el resultado, el ángulo, la dirección IP y el tiempo de respuesta.</p>
+          </article>
+          <article class="card">
+            <h3>Catálogo de instrucciones</h3>
+            <ul class="tags tags-wrap tags-mono">
+              <li>SERVO_SUBIR</li><li>SERVO_BAJAR</li><li>SERVO_STOP</li>
+              <li>TELEFERICO_AVANZAR</li><li>TELEFERICO_REGRESAR</li><li>TELEFERICO_PARAR</li><li>PING</li>
+            </ul>
+            <p>La tabla <code>Permiso</code> define qué rol puede ejecutar cada una. Los roles son Usuario Básico, Empleado y Administrador.</p>
+          </article>
+          <article class="card">
+            <h3>Grupos de endpoints</h3>
+            <ul class="endpoints">
+              <li><code>/api/auth</code><span>login, registro y roles</span></li>
+              <li><code>/api/puente</code><span>abrir, cerrar, estado y log</span></li>
+              <li><code>/api/teleferico</code><span>avanzar, regresar, parar y log</span></li>
+              <li><code>/api/instrucciones</code><span>pendientes, respuesta y local</span></li>
+            </ul>
+          </article>
+        
+        
+      </div>
+      
+        <div class="tech">
+          <article class="card card-wide">
+            <h3>Tecnologías por capa</h3>
+            <div class="table-scroll">
+              <table class="mini-table">
+                <thead><tr><th>Capa</th><th>Tecnología</th><th>Estándar</th><th>Función</th></tr></thead>
+                <tbody>
+                  <tr><td>Presentación</td><td>Vue 3 y Vite</td><td>SPA</td><td>Cliente que consume la API</td></tr>
+                  <tr><td>Peticiones</td><td>Axios</td><td>REST con interceptores</td><td>Envía el token en cada solicitud</td></tr>
+                  <tr><td>Sesión</td><td>JWT HS256</td><td>RFC 7519</td><td>Autenticación sin estado</td></tr>
+                  <tr><td>API</td><td>ASP.NET Core 8, Swagger</td><td>REST, OpenAPI 3</td><td>Endpoints y documentación</td></tr>
+                  <tr><td>Datos</td><td>Dapper y SqlClient</td><td>TDS sobre TCP</td><td>Consultas y procedimientos almacenados</td></tr>
+                  <tr><td>Persistencia</td><td>SQL Server 2022 en Docker</td><td>T-SQL</td><td>Datos y cola de instrucciones</td></tr>
+                  <tr><td>Enlace inalámbrico</td><td>ESP32 con WiFi</td><td>IEEE 802.11 b/g/n</td><td>Pasarela entre la red y la maqueta</td></tr>
+                  <tr><td>ESP32 a Mega</td><td>UART, Serial2</td><td>9600 8N1, TTL</td><td>Transporte de comandos</td></tr>
+                  <tr><td>Adaptación</td><td>TXS0108E</td><td>3.3 V a 5 V</td><td>Nivel físico</td></tr>
+                  <tr><td>Mega a esclavos</td><td>I2C, Wire.h</td><td>100 kHz, 7 bits</td><td>Bus de control local</td></tr>
+                  <tr><td>Actuadores</td><td>Servo.h, Stepper.h, GPIO</td><td>PWM 50 Hz</td><td>Movimiento y sensado</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+          <article class="card">
+            <h3>Puertos, direcciones y pines</h3>
+            <dl class="ports">
+              <div><dt>Frontend Vite</dt><dd>3000</dd></div>
+              <div><dt>API HTTP</dt><dd>5238</dd></div>
+              <div><dt>API HTTPS</dt><dd>7137</dd></div>
+              <div><dt>SQL Server</dt><dd>1444 a 1433</dd></div>
+              <div><dt>ESP32 HTTP local</dt><dd>80</dd></div>
+              <div><dt>ngrok</dt><dd>443</dd></div>
+              <div><dt>I2C puente y teleférico</dt><dd>0x08</dd></div>
+              <div><dt>I2C elevador</dt><dd>0x09</dd></div>
+              <div><dt>UART del ESP32</dt><dd>RX 16, TX 17</dd></div>
+              <div><dt>Botones locales</dt><dd>GPIO32 abre, GPIO33 cierra</dd></div>
+              <div><dt>Fines de carrera</dt><dd>Pines 12 y 13</dd></div>
+            </dl>
+          </article>
+        </div>
+
+        <div class="roles">
+          <article class="mini-card"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg><h3>Arduino Mega, el maestro</h3><p>Es el único que inicia el bus I2C. Decide a qué esclavo hablar, traduce la instrucción y espera el estado. Frente al ESP32 es esclavo por UART y solo recibe líneas de texto.</p></article>
+          <article class="mini-card"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg><h3>Esclavos 0x08 y 0x09</h3><p>Son pasivos: Wire.onReceive ejecuta y Wire.onRequest responde, nunca inician tráfico. El 0x08 mueve el servo del pin 6 y el motor a pasos de los pines 8 a 11. El 0x09 mueve el elevador, un LED y los fines de carrera.</p></article>
+          <article class="mini-card"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0"/><circle cx="12" cy="19" r="1"/></svg><h3>ESP32, el puente de transporte</h3><p>No es maestro ni esclavo I2C. Lleva las órdenes de la red a la UART del Mega y devuelve los resultados a la API.</p></article>
+        </div>
+
+        <figure class="figure">
+          <img src="img/base-datos-er.png" alt="Diagrama entidad relación de la base de datos Ciudad_New_York con las tablas Usuario, UsuarioRol, RolUsuario, Permiso, Instruccion, Instruccion_Pendiente, Log_Instruccion, Dispositivo y Estado_Componente" loading="lazy" data-zoom>
+          <figcaption>Modelo entidad relación de la base de datos Ciudad_New_York, tomado del informe final. Toca la imagen para ampliarla.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- COMPONENTES -->
+    <section class="section" id="componentes">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">03 &middot; Componentes importantes</p>
+          <h2>Lo que hace posible cada movimiento</h2>
+          <p>Filtra por grupo para ver qué pieza cumple cada función dentro del sistema.</p>
+        </header>
+
+        <div class="filters" role="group" aria-label="Filtrar componentes">
+          <button class="chip is-active" data-filter="all" aria-pressed="true">Todos</button>
+          <button class="chip" data-filter="control" aria-pressed="false">Control y enlace</button>
+          <button class="chip" data-filter="actuador" aria-pressed="false">Actuadores</button>
+          <button class="chip" data-filter="software" aria-pressed="false">Software</button>
+        </div>
+
+        <div class="comp-grid" id="compGrid">
+          <article class="comp" data-group="control">
+            <h3>ESP32</h3>
+            <p class="comp-role">Pasarela WiFi</p>
+            <p>Consulta la API cada 5 segundos, atiende un servidor HTTP en el puerto 80 y lee los botones físicos. Trabaja a 3.3 V.</p>
+          </article>
+          <article class="comp" data-group="control">
+            <h3>Arduino Mega</h3>
+            <p class="comp-role">Maestro I2C</p>
+            <p>Recibe comandos por Serial1 a 9600 baudios, escanea el bus I2C al arrancar y reenvía cada comando al esclavo.</p>
+          </article>
+          <article class="comp" data-group="control">
+            <h3>Arduino Uno</h3>
+            <p class="comp-role">Esclavo I2C 0x08</p>
+            <p>Esclavo 0x08. Controla el servo del puente y el motor a pasos del teleférico. Responde su posición con el formato <code>POS:ddd</code>.</p>
+          </article>
+          <article class="comp" data-group="control">
+            <h3>TXS0108E</h3>
+            <p class="comp-role">Conversor de nivel lógico</p>
+            <p>Traslada señales entre los 3.3 V del ESP32 y los 5 V del Mega en ambos sentidos.</p>
+          </article>
+          <article class="comp" data-group="control">
+            <h3>Botones físicos</h3>
+            <p class="comp-role">GPIO 32 y 33 del ESP32</p>
+            <p>Permiten operar el puente sin pasar por la API. El ESP32 notifica la pulsación a <code>/api/instrucciones/local</code>.</p>
+          </article>
+          <article class="comp" data-group="control">
+            <h3>Fuente y reguladores</h3>
+            <p class="comp-role">Energía</p>
+            <p>Fuente de 12 V y 5 A con reguladores step-down. El servo exige alimentación estable e independiente de la lógica.</p>
+          </article>
+
+          <article class="comp" data-group="actuador">
+            <h3>Servo MG996R</h3>
+            <p class="comp-role">Puente levadizo</p>
+            <p>Conectado al pin 6 del Uno. Recorre de 115 a 180 grados, un grado por ciclo con pausa de 20 ms.</p>
+          </article>
+          <article class="comp" data-group="actuador">
+            <h3>Motor a pasos con ULN2003</h3>
+            <p class="comp-role">Teleférico</p>
+            <p>Conectado a los pines 8 a 11 del Uno. Avanza y retrocede por número de pasos, 3000 por defecto.</p>
+          </article>
+          <article class="comp" data-group="actuador">
+            <h3>Motor a pasos del elevador</h3>
+            <p class="comp-role">Elevador, I2C 0x09</p>
+            <p>2048 pasos y 10 RPM, en el esclavo 0x09. Representa al Empire State Building y se apoya en fines de carrera en los pines 12 y 13.</p>
+          </article>
+          <article class="comp" data-group="actuador">
+            <h3>LEDs rojo, amarillo y verde</h3>
+            <p class="comp-role">Semáforo</p>
+            <p>Con resistencias limitadoras. Su secuencia depende del estado del puente levadizo.</p>
+          </article>
+
+          <article class="comp" data-group="software">
+            <h3>Vue 3</h3>
+            <p class="comp-role">Interfaz web</p>
+            <p>TypeScript, Vite, Pinia y Axios con interceptores JWT. Páginas de sesión, panel, puente, teleférico y Central Park.</p>
+          </article>
+          <article class="comp" data-group="software">
+            <h3>ASP.NET Core 8</h3>
+            <p class="comp-role">API REST</p>
+            <p>Swagger y autenticación JWT con roles. Expone las rutas que consumen la web y el ESP32.</p>
+          </article>
+          <article class="comp" data-group="software">
+            <h3>SQL Server 2022</h3>
+            <p class="comp-role">Persistencia</p>
+            <p>Corre en un contenedor Docker. Guarda usuarios, roles, la cola de instrucciones y la bitácora.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIMULADOR -->
+    <section class="section section-dark" id="simulador">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">04 &middot; Simulador</p>
+          <h2>Sigue una instrucción de punta a punta</h2>
+          <p>Envía una orden y observa cómo espera en la cola hasta la siguiente consulta del ESP32. Desactiva una respuesta para ver cómo el sistema reporta el error.</p>
+        </header>
+
+        <div class="sim">
+          <div class="sim-controls">
+            <div class="ctl-group" role="group" aria-label="Instrucciones desde la interfaz web">
+              <span class="ctl-label">Desde la web</span>
+              <button class="btn btn-taxi" data-cmd="SERVO_SUBIR">Abrir puente</button>
+              <button class="btn btn-taxi" data-cmd="SERVO_BAJAR">Cerrar puente</button>
+              <button class="btn btn-taxi" data-cmd="TELEFERICO_AVANZAR">Avanzar teleférico</button>
+              <button class="btn btn-taxi" data-cmd="TELEFERICO_REGRESAR">Regresar teleférico</button>
+            </div>
+            <div class="ctl-group">
+              <span class="ctl-label">Sin API</span>
+              <button class="btn btn-outline" id="btnLocal">Botón físico del puente</button>
+            </div>
+            <div class="ctl-group">
+              <span class="ctl-label">Fallos</span>
+              <label class="check"><input type="checkbox" id="megaResponds" checked> El Mega responde</label>
+              <label class="check"><input type="checkbox" id="unoResponds" checked> El Uno responde en 0x08</label>
+            </div>
+            <div class="ctl-group">
+              <label class="select-label" for="speed">Velocidad</label>
+              <select id="speed">
+                <option value="1">Tiempo real</option>
+                <option value="4" selected>Rápida x4</option>
+                <option value="10">Muy rápida x10</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="pipeline-scroll">
+            <div class="pipeline" id="pipeline" aria-label="Ruta de una instrucción">
+              <div class="node" data-node="web"><strong>Interfaz web</strong><span>Vue 3</span></div>
+              <div class="plink"><i>HTTP</i></div>
+              <div class="node" data-node="api"><strong>API REST</strong><span>ASP.NET Core 8</span></div>
+              <div class="plink"><i>SQL</i></div>
+              <div class="node" data-node="db"><strong>Base de datos</strong><span id="queueCount">Cola: 0</span></div>
+              <div class="plink"><i>Polling</i></div>
+              <div class="node" data-node="esp"><strong>ESP32</strong><span>Pasarela</span></div>
+              <div class="plink"><i>UART TTL</i></div>
+              <div class="node" data-node="mega"><strong>Arduino Mega</strong><span>Maestro I2C</span></div>
+              <div class="plink"><i>I2C 0x08</i></div>
+              <div class="node" data-node="uno"><strong>Arduino Uno</strong><span>Esclavo</span></div>
+              <div class="plink"><i>Pines</i></div>
+              <div class="node" data-node="act"><strong>Actuador</strong><span>Servo o motor</span></div>
+            </div>
+          </div>
+
+          <p class="sim-step" id="simStep" aria-live="polite">Esperando una instrucción.</p>
+
+          <div class="sim-grid">
+            <div class="panel">
+              <h3>Maqueta</h3>
+              <svg class="scene" viewBox="0 0 360 200" role="img" aria-label="Puente levadizo con semáforo">
+                <rect class="sc-water" x="0" y="130" width="360" height="70"/>
+                <rect class="sc-bank" x="0" y="110" width="110" height="90"/>
+                <rect class="sc-bank" x="250" y="110" width="110" height="90"/>
+                <rect class="sc-road" x="0" y="106" width="110" height="5"/>
+                <rect class="sc-road" x="250" y="106" width="110" height="5"/>
+                <g id="deck" transform="rotate(0 110 108)">
+                  <rect class="sc-deck" x="110" y="102" width="140" height="8" rx="1"/>
+                  <line class="sc-mark" x1="120" y1="106" x2="240" y2="106"/>
+                </g>
+                <circle class="sc-hinge" cx="110" cy="108" r="4"/>
+                <g transform="translate(300 40)">
+                  <rect class="sc-pole" x="-2" y="40" width="4" height="30"/>
+                  <rect class="sc-lamp" x="-9" y="-6" width="18" height="48" rx="4"/>
+                  <circle id="lampRed" class="lamp" cx="0" cy="3" r="5"/>
+                  <circle id="lampYellow" class="lamp" cx="0" cy="17" r="5"/>
+                  <circle id="lampGreen" class="lamp" cx="0" cy="31" r="5"/>
+                </g>
+                <text class="sc-text" x="12" y="24">Puente</text>
+                <text class="sc-text sc-val" id="angleText" x="12" y="44">180 grados</text>
+                <text class="sc-text sc-small" x="262" y="24">Semáforo</text>
+              </svg>
+              <p class="note" id="lightNote">Semáforo en verde con el puente cerrado.</p>
+
+              <svg class="scene scene-tram" viewBox="0 0 360 130" role="img" aria-label="Teleférico entre dos torres">
+                <text class="sc-text" x="12" y="20">Teleférico</text>
+                <text class="sc-text sc-val" id="stepsText" x="12" y="38">0 pasos</text>
+                <line class="sc-tower" x1="60" y1="122" x2="60" y2="56"/>
+                <line class="sc-tower" x1="320" y1="122" x2="320" y2="56"/>
+                <line class="sc-cable" x1="60" y1="58" x2="320" y2="58"/>
+                <g id="cabin" transform="translate(60 0)">
+                  <line class="sc-cable" x1="0" y1="58" x2="0" y2="74"/>
+                  <rect class="sc-cabin" x="-16" y="74" width="32" height="22" rx="3"/>
+                  <rect class="sc-win" x="-11" y="79" width="8" height="8"/>
+                  <rect class="sc-win" x="3" y="79" width="8" height="8"/>
+                </g>
+              </svg>
+            </div>
+
+            <div class="panel">
+              <h3>Estado del enlace</h3>
+              <div class="poll">
+                <svg viewBox="0 0 84 84" aria-hidden="true">
+                  <circle class="ring-bg" cx="42" cy="42" r="34"/>
+                  <circle class="ring" id="ring" cx="42" cy="42" r="34" transform="rotate(-90 42 42)"/>
+                </svg>
+                <div class="poll-text"><strong id="pollTime">5.0 s</strong><span>para la siguiente consulta del ESP32</span></div>
+              </div>
+              <ul class="flags">
+                <li><span class="dot" id="dotMega"></span><code>megaOnline</code><b id="valMega">true</b></li>
+                <li><span class="dot" id="dotUno"></span><code>esclavo1Online</code><b id="valUno">true</b></li>
+              </ul>
+              <dl class="metrics">
+                <div><dt>Instrucciones atendidas</dt><dd id="mDone">0</dd></div>
+                <div><dt>Última espera en la cola</dt><dd id="mLatency">sin datos</dd></div>
+              </dl>
+              <p class="note">La espera en la cola llega hasta 5 s. La latencia total de la bitácora suma además la espera de respuesta del Mega y el recorrido animado del paquete.</p>
+            </div>
+
+            <div class="panel panel-wide">
+              <h3>Registro en vivo</h3>
+              <ol class="log" id="log" aria-live="off"></ol>
+              <h3 class="h-sub">Bitácora, tabla Log_Instruccion</h3>
+              <div class="table-scroll">
+                <table class="logtable">
+                  <thead><tr><th>#</th><th>Instrucción</th><th>Origen</th><th>Resultado</th><th>Valor</th><th>Latencia</th></tr></thead>
+                  <tbody id="bitacora"><tr class="empty"><td colspan="6">Sin ejecuciones todavía.</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <p class="note note-light">Simulación didáctica. La consulta de 5 s, el PING de 3 s, los 10 s de tiempo límite y la espera de respuesta de 3.5 s salen del informe final. La pista del teleférico y la regla del semáforo son ilustrativas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section class="section section-alt" id="video">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">05 &middot; El proyecto en video</p>
+          <h2>La maqueta funcionando</h2>
+          <p>Recorrido grabado por el equipo con la maqueta terminada, el panel web y los subsistemas. Toca un capítulo para saltar a esa parte.</p>
+        </header>
+        <div class="video-grid">
+          <div class="phone">
+            <video id="projVideo" controls preload="metadata" playsinline poster="video/poster.jpg">
+              <source src="video/proyecto.mp4" type="video/mp4">
+              Tu navegador no puede reproducir este video.
+            </video>
+          </div>
+          <div class="video-side">
+            <h3>Capítulos</h3>
+            <ol class="chapters" id="chapters">
+              <li><button type="button" data-t="0"><b>0:00</b><span>Vista general de la maqueta y el teleférico</span></button></li>
+              <li><button type="button" data-t="90"><b>1:30</b><span>Control desde el panel web</span></button></li>
+              <li><button type="button" data-t="120"><b>2:00</b><span>Calles y semáforo</span></button></li>
+              <li><button type="button" data-t="180"><b>3:00</b><span>Elevador dentro del edificio</span></button></li>
+              <li><button type="button" data-t="210"><b>3:30</b><span>Edificios y avenidas</span></button></li>
+              <li><button type="button" data-t="240"><b>4:00</b><span>Fuente y jardines</span></button></li>
+            </ol>
+            <div class="video-links">
+              <a class="btn btn-primary" href="https://canva.link/zoir3n5u0mdn6ub" rel="noopener" target="_blank">Presentación en Canva</a>
+              <a class="btn btn-dark" href="https://github.com/OmegaKerveus7/City_New_York.git" rel="noopener" target="_blank">Repositorio en GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LUGARES -->
+    <section class="section section-alt" id="lugares">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">06 &middot; Los lugares que recreamos</p>
+          <h2>Seis rincones de Nueva York, un elemento de la maqueta cada uno</h2>
+          <p>Cada zona se eligió por su respaldo histórico y por lo que permite automatizar en 2 metros.</p>
+        </header>
+        <div class="places">
+          <article class="place">
+            <div class="place-img"><img src="img/times-square.jpg" alt="Times Square de noche, con pantallas luminosas y mucha gente" loading="lazy" data-zoom></div>
+            <div class="place-body"><span class="place-tag">Semáforo</span><h3>Times Square</h3><p>Una de las intersecciones más transitadas del mundo y referencia del control de tránsito. En la maqueta el semáforo se relaciona con el puente levadizo.</p></div>
+          </article>
+          <article class="place">
+            <div class="place-img"><img src="img/central-park.jpg" alt="Vista aérea de Central Park rodeado de edificios" loading="lazy" data-zoom></div>
+            <div class="place-body"><span class="place-tag">Fuente y parque</span><h3>Central Park y Bethesda</h3><p>La fuente Bethesda se inauguró en 1873 y conmemora la llegada del agua potable. Esta zona representa la fuente y el parque.</p></div>
+          </article>
+          <article class="place">
+            <div class="place-img"><img src="img/puente-dumbo.jpg" alt="Puente de Manhattan visto entre dos edificios de ladrillo en Brooklyn" loading="lazy" data-zoom></div>
+            <div class="place-body"><span class="place-tag">Puente levadizo</span><h3>Roosevelt Island Bridge</h3><p>Puente de elevación vertical inaugurado en 1955. Su tramo central se eleva en la maqueta con un servo. La foto es ilustrativa: muestra el Manhattan Bridge.</p></div>
+          </article>
+          <article class="place place-art">
+            <div class="place-img art-empire" role="img" aria-label="Ilustración del Empire State Building con una luz que parpadea">
+              <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+                <defs><linearGradient id="skyE" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1f3a"/><stop offset="1" stop-color="#2a4f86"/></linearGradient></defs>
+                <rect width="300" height="200" fill="url(#skyE)"/>
+                <g class="esb-lights"><circle cx="40" cy="30" r="1.2"/><circle cx="90" cy="55" r="1"/><circle cx="230" cy="40" r="1.3"/><circle cx="265" cy="75" r="1"/><circle cx="200" cy="22" r="1"/></g>
+                <g fill="#0a1a31"><rect x="20" y="120" width="40" height="80"/><rect x="62" y="100" width="34" height="100"/><rect x="215" y="110" width="38" height="90"/><rect x="255" y="130" width="45" height="70"/></g>
+                <g fill="#14315a"><rect x="125" y="150" width="50" height="50"/><rect x="132" y="120" width="36" height="30"/><rect x="138" y="92" width="24" height="28"/><rect x="143" y="68" width="14" height="24"/><rect x="147" y="50" width="6" height="18"/><rect x="149" y="22" width="2" height="28"/></g>
+                <g class="esb-win" fill="#f7b500"><rect x="132" y="156" width="4" height="4"/><rect x="142" y="156" width="4" height="4"/><rect x="156" y="164" width="4" height="4"/><rect x="144" y="128" width="4" height="4"/><rect x="154" y="100" width="4" height="4"/><rect x="144" y="100" width="4" height="4"/><rect x="150" y="76" width="3" height="3"/></g>
+                <circle class="esb-beacon" cx="150" cy="20" r="3" fill="#ff5a46"/>
+              </svg>
+            </div>
+            <div class="place-body"><span class="place-tag">Elevador</span><h3>Empire State Building</h3><p>Inaugurado en 1931, es la referencia del desarrollo vertical y de los elevadores de alta velocidad. En la maqueta es un edificio con pisos y un elevador movido por un motor a pasos.</p></div>
+          </article>
+          <article class="place place-art">
+            <div class="place-img art-tram" role="img" aria-label="Ilustración de la cabina del teleférico cruzando el río entre dos torres">
+              <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+                <defs><linearGradient id="skyT" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7b500"/><stop offset=".55" stop-color="#e98a3c"/><stop offset="1" stop-color="#a63d2f"/></linearGradient></defs>
+                <rect width="300" height="200" fill="url(#skyT)"/>
+                <circle cx="215" cy="110" r="28" fill="#ffe08a" opacity=".85"/>
+                <rect y="140" width="300" height="60" fill="#13315c"/>
+                <g class="waves" stroke="#8fb4e6" stroke-width="1.5" fill="none" opacity=".7"><path d="M0 155q12-6 25 0t25 0t25 0t25 0t25 0t25 0t25 0t25 0t25 0t25 0t25 0t25 0"/><path d="M-12 172q12-6 25 0t25 0t25 0t25 0t25 0t25 0t25 0t25 0t25 0t25 0t25 0t25 0"/></g>
+                <g stroke="#0b1f3a" stroke-width="4"><line x1="40" y1="145" x2="40" y2="48"/><line x1="260" y1="145" x2="260" y2="48"/></g>
+                <line x1="40" y1="50" x2="260" y2="50" stroke="#0b1f3a" stroke-width="2"/>
+                <g class="tram-cabin"><line x1="0" y1="50" x2="0" y2="66" stroke="#0b1f3a" stroke-width="2"/><rect x="-18" y="66" width="36" height="24" rx="4" fill="#a63d2f" stroke="#0b1f3a" stroke-width="2"/><rect x="-13" y="71" width="9" height="9" fill="#cfe6ff"/><rect x="4" y="71" width="9" height="9" fill="#cfe6ff"/></g>
+              </svg>
+            </div>
+            <div class="place-body"><span class="place-tag">Teleférico</span><h3>Roosevelt Island Tramway</h3><p>Primer tranvía aéreo de uso masivo en Norteamérica, inaugurado en 1976. Cruza el East River en unos tres minutos.</p></div>
+          </article>
+          <article class="place">
+            <div class="place-img"><img src="img/estatua-libertad.jpg" alt="Antorcha y corona de la Estatua de la Libertad contra un cielo azul" loading="lazy" data-zoom></div>
+            <div class="place-body"><span class="place-tag">Decoración</span><h3>Estatua de la Libertad</h3><p>Inaugurada en 1886 en Liberty Island. No es un sistema funcional, pero identifica la maqueta como Nueva York desde la zona del río.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="banner" id="banner" aria-label="Puente Verrazzano-Narrows">
+      <div class="banner-bg" style="background-image:url('img/verrazzano.jpg')" role="img" aria-label="Puente Verrazzano-Narrows sobre la bahía"></div>
+      <div class="banner-shade"></div>
+      <div class="wrap banner-copy"><p>Cada subsistema funciona solo.<br><strong>Juntos forman la ciudad.</strong></p></div>
+    </section>
+
+    <!-- SUBSISTEMAS -->
+    <section class="section" id="subsistemas">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">07 &middot; Subsistemas</p>
+          <h2>Cada lugar de Nueva York es un módulo</h2>
+          <p>Cada elemento tiene su referencia real, su propio conjunto de instrucciones y su estado de avance.</p>
+        </header>
+
+        <div class="tabs" role="tablist" aria-label="Subsistemas">
+          <button role="tab" class="tab is-active" id="tab-puente" aria-selected="true" aria-controls="panel-puente">Puente levadizo</button>
+          <button role="tab" class="tab" id="tab-teleferico" aria-selected="false" aria-controls="panel-teleferico" tabindex="-1">Teleférico</button>
+          <button role="tab" class="tab" id="tab-elevador" aria-selected="false" aria-controls="panel-elevador" tabindex="-1">Elevador</button>
+          <button role="tab" class="tab" id="tab-semaforo" aria-selected="false" aria-controls="panel-semaforo" tabindex="-1">Semáforo</button>
+          <button role="tab" class="tab" id="tab-otros" aria-selected="false" aria-controls="panel-otros" tabindex="-1">Río, fuente y parque</button>
+        </div>
+
+        <div class="tabpanel is-active" role="tabpanel" id="panel-puente" aria-labelledby="tab-puente">
+          <div class="tp-head"><h3>Roosevelt Island Bridge</h3><span class="status ok">Implementado</span></div>
+          <p>Puente de elevación vertical inaugurado en 1955 que conecta la isla Roosevelt con Queens. En la maqueta su tramo central se eleva con un servomotor y se opera desde la web y desde botones físicos.</p>
+          <dl class="specs">
+            <div><dt>Actuador</dt><dd>Servo MG996R</dd></div>
+            <div><dt>Pin</dt><dd>6 del esclavo 0x08</dd></div>
+            <div><dt>Dirección I2C</dt><dd>0x08</dd></div>
+            <div><dt>Ángulo abierto</dt><dd>115 grados</dd></div>
+            <div><dt>Ángulo cerrado</dt><dd>180 grados</dd></div>
+            <div><dt>Movimiento</dt><dd>1 grado por ciclo, pausa de 20 ms</dd></div>
+            <div><dt>Botones físicos</dt><dd>GPIO32 abre, GPIO33 cierra</dd></div>
+            <div><dt>Respuesta</dt><dd>RESP POS:115</dd></div>
+            <div><dt>Instrucciones</dt><dd>SERVO_SUBIR, SERVO_BAJAR, SERVO_STOP</dd></div>
+          </dl>
+        </div>
+
+        <div class="tabpanel" role="tabpanel" id="panel-teleferico" aria-labelledby="tab-teleferico" hidden>
+          <div class="tp-head"><h3>Roosevelt Island Tramway</h3><span class="status ok">Implementado</span></div>
+          <p>Primer tranvía aéreo de uso masivo en Norteamérica, inaugurado en 1976. En la maqueta una cabina suspendida se desplaza sobre un cable tensado entre dos torres, movida por un motor a pasos.</p>
+          <dl class="specs">
+            <div><dt>Actuador</dt><dd>Motor a pasos con driver ULN2003</dd></div>
+            <div><dt>Pines</dt><dd>8 a 11 del esclavo 0x08</dd></div>
+            <div><dt>Dirección I2C</dt><dd>0x08</dd></div>
+            <div><dt>Pasos por vuelta</dt><dd>10500, configurable</dd></div>
+            <div><dt>Pasos por defecto</dt><dd>3000</dd></div>
+            <div><dt>Velocidad</dt><dd>5 RPM</dd></div>
+            <div><dt>Instrucciones</dt><dd>TELEFERICO_AVANZAR, TELEFERICO_REGRESAR, TELEFERICO_PARAR</dd></div>
+          </dl>
+          <p class="note">A 5 RPM el recorrido mecánico tarda mucho más que la comunicación.</p>
+        </div>
+
+        <div class="tabpanel" role="tabpanel" id="panel-elevador" aria-labelledby="tab-elevador" hidden>
+          <div class="tp-head"><h3>Empire State Building</h3><span class="status ok">Implementado</span></div>
+          <p>Inaugurado en 1931, es la referencia del desarrollo vertical. En la maqueta es un edificio con pisos visibles y un elevador interior, como se ve en el video. El esclavo 0x09 sensa los extremos del recorrido con fines de carrera.</p>
+          <dl class="specs">
+            <div><dt>Actuador</dt><dd>Motor a pasos</dd></div>
+            <div><dt>Dirección I2C</dt><dd>0x09</dd></div>
+            <div><dt>Pasos</dt><dd>2048</dd></div>
+            <div><dt>Velocidad</dt><dd>10 RPM</dd></div>
+            <div><dt>Fines de carrera</dt><dd>Pines 12 y 13, con INPUT_PULLUP</dd></div>
+            <div><dt>Piso 0 y piso máximo</dt><dd>GPIO12 y GPIO13</dd></div>
+            <div><dt>Respuesta</dt><dd>NIVEL:03|PAS:01234</dd></div>
+          </dl>
+        </div>
+
+        <div class="tabpanel" role="tabpanel" id="panel-semaforo" aria-labelledby="tab-semaforo" hidden>
+          <div class="tp-head"><h3>Times Square</h3><span class="status ok">Implementado</span></div>
+          <p>El semáforo no funciona solo. Está relacionado con el puente levadizo: mientras el tramo del puente está elevado, el tránsito vehicular debe detenerse. Es una regla de enclavamiento que usa el estado del puente como bandera.</p>
+          <dl class="specs">
+            <div><dt>Componente</dt><dd>LEDs rojo, amarillo y verde con resistencias</dd></div>
+            <div><dt>Puente cerrado</dt><dd>Verde, el tránsito avanza</dd></div>
+            <div><dt>Puente en movimiento</dt><dd>Amarillo</dd></div>
+            <div><dt>Puente elevado</dt><dd>Rojo, el tránsito se detiene</dd></div>
+          </dl>
+          <p class="note">Puedes ver la relación en el simulador, en la maqueta de la sección anterior.</p>
+        </div>
+
+        <div class="tabpanel" role="tabpanel" id="panel-otros" aria-labelledby="tab-otros" hidden>
+          <div class="tp-head"><h3>East River, Bethesda Fountain y Central Park</h3><span class="status ok">Implementado</span></div>
+          <div class="mini-grid">
+            <article><h4>Río</h4><p>Mini bomba de agua sumergible que simula una ligera corriente.</p></article>
+            <article><h4>Fuente</h4><p>Mini bomba de agua sumergible independiente para el efecto de agua en movimiento. En el video se ve rodeada de jardines.</p></article>
+            <article><h4>Parque</h4><p>LEDs de iluminación y una fotoresistencia para encender el alumbrado automáticamente.</p></article>
+          </div>
+          <p class="note">El agua es el riesgo de mayor severidad del proyecto. La mitigación exige canalizar los cables y separar físicamente las zonas húmedas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- AVANCE -->
+    <section class="section section-dark" id="avance">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">08 &middot; Así se construyó la maqueta</p>
+          <h2>Del taller a la maqueta terminada</h2>
+          <p>Fotografías del taller del equipo, tomadas del informe de la Fase II, con la construcción al 16 de octubre de 2026. Toca una foto para verla en grande.</p>
+        </header>
+        <div class="shots">
+          <figure class="shot"><img src="img/maqueta-1.jpg" alt="Edificio de esquina con fachada curva junto a una torre de ventanas caladas" loading="lazy" data-zoom><figcaption>Edificio de esquina con fachada curva y torre de ventanas caladas.</figcaption></figure>
+          <figure class="shot"><img src="img/maqueta-3.jpg" alt="Teleférico con torres de celosía, cable tensado y cabina" loading="lazy" data-zoom><figcaption>Teleférico con torres de celosía, cable tensado, cabina y Arduino Uno conectado.</figcaption></figure>
+          <figure class="shot"><img src="img/maqueta-2.jpg" alt="Torre con aguja sostenida en una mano" loading="lazy" data-zoom><figcaption>Torre con aguja para la maqueta.</figcaption></figure>
+          <figure class="shot"><img src="img/maqueta-4.jpg" alt="Calle pintada con tres edificios colocados sobre las aceras" loading="lazy" data-zoom><figcaption>Calle pintada con tres edificios colocados sobre las aceras.</figcaption></figure>
+          <figure class="shot"><img src="img/maqueta-5.jpg" alt="Plano trazado sobre la base con la zona del Empire State marcada" loading="lazy" data-zoom><figcaption>Plano trazado sobre la base, con la zona del Empire State marcada.</figcaption></figure>
+          <figure class="shot"><img src="img/maqueta-6.jpg" alt="Calle en forma de T pintada sobre la base" loading="lazy" data-zoom><figcaption>Calle en forma de T pintada sobre la base.</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARQUITECTURA -->
+    <section class="section section-alt" id="arquitectura">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">09 &middot; Cómo ayuda a entender una arquitectura heterogénea y asíncrona</p>
+          <h2>Dos ideas, un mismo proyecto</h2>
+          <p>La maqueta es un ejemplo físico de dos conceptos del curso. Cada uno se puede señalar en un punto concreto del sistema.</p>
+        </header>
+
+        <div class="two-col">
+          <article class="concept">
+            <h3>Heterogénea</h3>
+            <p>Las piezas son distintas entre sí en hardware, voltaje, lenguaje y protocolo, y aun así cooperan.</p>
+            <div class="table-scroll">
+              <table class="mini-table">
+                <thead><tr><th>Nodo</th><th>Plataforma</th><th>Voltaje</th><th>Enlace</th></tr></thead>
+                <tbody>
+                  <tr><td>Interfaz</td><td>Vue 3, TypeScript</td><td>No aplica</td><td>HTTP</td></tr>
+                  <tr><td>API</td><td>ASP.NET Core 8, C#</td><td>No aplica</td><td>HTTP, SQL</td></tr>
+                  <tr><td>ESP32</td><td>Xtensa, 32 bits</td><td>3.3 V</td><td>WiFi, UART</td></tr>
+                  <tr><td>Mega y Uno</td><td>AVR, C++</td><td>5 V</td><td>UART, I2C</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>El conversor TXS0108E existe precisamente porque 3.3 V y 5 V conviven en la misma cadena.</p>
+          </article>
+
+          <article class="concept">
+            <h3>Asíncrona</h3>
+            <p>Quien da la orden no espera a que se ejecute. La orden se guarda y cada nodo la toma cuando le toca.</p>
+            <ul class="bullets">
+              <li><strong>Cola.</strong> La API responde al instante porque solo inserta la orden en la base de datos.</li>
+              <li><strong>Polling.</strong> El ESP32 decide cuándo preguntar, cada 5 segundos.</li>
+              <li><strong>UART sin reloj.</strong> Emisor y receptor acuerdan 9600 baudios y se alinean con el bit de inicio.</li>
+              <li><strong>Bloqueo en la cola.</strong> La instrucción se toma de a una, con UPDLOCK y HOLDLOCK sobre la tabla.</li>
+              <li><strong>Espera acotada.</strong> El Mega espera la respuesta del esclavo antes de leerla.</li>
+              <li><strong>Banderas.</strong> <code>megaOnline</code> y <code>esclavo1Online</code> informan si un nodo dejó de responder.</li>
+            </ul>
+          </article>
+        </div>
+
+        <article class="timeline-card">
+          <h3>Dónde se va el tiempo de una instrucción</h3>
+          <p>Valores del informe final: el peor caso suma una consulta recién perdida y la espera de respuesta, unos 8.5 segundos. El promedio ronda los 2.5 segundos.</p>
+          <div class="tl" role="img" aria-label="Línea de tiempo: hasta 5 segundos de espera en cola, 3.5 segundos de espera de respuesta, respuesta final">
+            <div class="tl-seg tl-queue" style="flex:5"><b>0 a 5 s</b><span>espera en la cola hasta la próxima consulta</span></div>
+            <div class="tl-seg tl-hop" style="flex:0.6"><b>UART</b></div>
+            <div class="tl-seg tl-wait" style="flex:3.5"><b>3.5 s</b><span>espera de respuesta y movimiento</span></div>
+            <div class="tl-seg tl-ret" style="flex:0.9"><b>Respuesta</b></div>
+          </div>
+          <p class="note">A eso se suma el tiempo mecánico: el teleférico a 5 RPM tarda mucho más que la comunicación. Esa latencia es el precio de desacoplar la web del hardware. A cambio, los botones físicos operan el puente sin pasar por la API.</p>
+        </article>
+
+        <div class="crit">
+          <h3 class="crit-title">Lectura crítica del informe final</h3>
+          <div class="crit-grid">
+            <article class="card"><h4>Un solo punto de fallo de red</h4><p>Si el ESP32 se cae, el sistema queda aislado aunque el Mega y los esclavos sigan vivos. Su servidor local solo sirve para diagnóstico, no es una ruta alternativa.</p></article>
+            <article class="card"><h4>Seguridad como deuda técnica</h4><p>CORS abierto, contraseña de SA en texto plano y TrustServerCertificate activo son aceptables en desarrollo, pero se declaran como deuda técnica y no como diseño final.</p></article>
+            <article class="card"><h4>Un mismo texto de punta a punta</h4><p>SERVO_SUBIR viaja sin traducción por UART e I2C. Simplifica la depuración, pero acopla el esclavo a la API: renombrar una instrucción en la base obliga a reflashear los Arduinos.</p></article>
+            <article class="card"><h4>Confiabilidad sin CRC</h4><p>No hay CRC, ni confirmación por trama, ni número de secuencia. La confiabilidad se apoya en el idPendiente que asigna el backend.</p></article>
+          </div>
+        </div>
+
+        <article class="takeaways notused">
+          <h3>Tecnologías que no se usan, y por qué</h3>
+          <div class="table-scroll">
+            <table class="mini-table">
+              <thead><tr><th>Ausente</th><th>Consecuencia o justificación</th></tr></thead>
+              <tbody>
+                <tr><td>WebSocket, SignalR o SSE</td><td>No hay empuje desde el servidor: la interfaz se actualiza por polling REST, con latencia mínima cercana a 5 s.</td></tr>
+                <tr><td>MQTT, AMQP, Kafka o RabbitMQ</td><td>La cola es una tabla SQL. Sirve para un dispositivo y no escala a muchos.</td></tr>
+                <tr><td>gRPC o Protobuf</td><td>Todo es JSON en texto. Consume más pero se lee en el monitor serie.</td></tr>
+                <tr><td>Buses industriales como Modbus o CAN</td><td>Se eligió I2C por la simplicidad del cableado en la maqueta.</td></tr>
+                <tr><td>BLE, LoRa o Zigbee</td><td>El ESP32 usa WiFi directo a la red local.</td></tr>
+                <tr><td>OAuth 2.0</td><td>El JWT es propio, con clave simétrica y sin refresh token.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+
+        <article class="takeaways">
+          <h3>Qué permite entender</h3>
+          <ol>
+            <li>Un sistema grande se divide en módulos con una interfaz clara entre ellos.</li>
+            <li>Un protocolo distinto en cada salto resuelve un problema distinto.</li>
+            <li>Desacoplar con una cola quita bloqueos, pero agrega latencia.</li>
+            <li>Un sistema distribuido necesita detectar fallos con banderas y tiempos límite.</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <!-- CONCLUSIÓN -->
+    <section class="section" id="conclusion">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="eyebrow">10 &middot; Conclusión sobre el proyecto</p>
+          <h2>Lo que demuestra la maqueta</h2>
+        </header>
+
+        <div class="concl-grid">
+          <article class="concl"><span>1</span><p>Una arquitectura modular puede coordinar siete subsistemas, puente, teleférico, semáforos, elevador, fuente, río y parque, bajo un mismo esquema de control.</p></article>
+          <article class="concl"><span>2</span><p>I2C comunica al controlador central con los nodos periféricos y la UART de niveles lógicos enlaza al ESP32 con el Arduino Mega. Los dos protocolos se complementan.</p></article>
+          <article class="concl"><span>3</span><p>El control por estados, las banderas y los tiempos límite coordinan los actuadores y evitan órdenes simultáneas incompatibles.</p></article>
+          <article class="concl"><span>4</span><p>La cadena HTTP, UART e I2C desacopla la web del hardware. Cuesta latencia, unos 8.5 s en el peor caso, pero permite sustituir un subsistema sin tocar los demás.</p></article>
+          <article class="concl"><span>5</span><p>El agua en el río y la fuente es el riesgo de mayor severidad. Su mitigación debe resolverse desde la construcción y no después.</p></article>
+          <article class="concl"><span>6</span><p>La memoria del ESP32 y el Arduino, la dependencia de la API y la seguridad declarada como deuda técnica condicionan la estabilidad si no se atienden.</p></article>
+        </div>
+
+        <div class="progress">
+          <h3>Subsistemas del informe final</h3>
+          <ul class="progress-list">
+            <li><span>Puente levadizo</span><em class="status ok">Implementado</em></li>
+            <li><span>Teleférico</span><em class="status ok">Implementado</em></li>
+            <li><span>Elevador</span><em class="status ok">Implementado</em></li>
+            <li><span>Semáforos</span><em class="status ok">Implementado</em></li>
+            <li><span>Río, fuente y parque</span><em class="status ok">Implementado</em></li>
+          </ul>
+          <p class="note">Hito 3, presentación final: 31 de octubre de 2026.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-uni">
+        <img src="img/logo-umg.jpg" alt="Sello de la Universidad Mariano Gálvez de Guatemala" width="84" height="84">
+        <div>
+        <p class="footer-title">Universidad Mariano Gálvez</p>
+        <p>Arquitectura de Computadoras I<br>Ingeniero Jorge Luis Salguero Galicia<br>Facultad de Ingeniería en Sistemas</p>
+        </div>
+      </div>
+      <div>
+        <p class="footer-title">Grupo 1</p>
+        <ul class="members">
+          <li>Gustavo Adolfo Tobías Ramírez</li>
+          <li>Stephany Maritza Andrino Vargas</li>
+          <li>Danny Steven Gudiel Castañeda</li>
+          <li>Wilmer Josafat Leon Alvarado</li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-title">Enlaces</p>
+        <p><a href="https://github.com/OmegaKerveus7/City_New_York.git" rel="noopener">Repositorio en GitHub</a><br><a href="https://canva.link/zoir3n5u0mdn6ub" rel="noopener">Presentación en Canva</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Imagen ampliada">
+    <button class="lb-close" aria-label="Cerrar imagen">&times;</button>
+    <img alt="">
+    <p class="lb-cap"></p>
+  </div>
+
+  <script src="js/script.js" defer></script>
+</body>
+</html>
